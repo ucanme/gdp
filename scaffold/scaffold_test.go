@@ -6,10 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-
 	"github.com/stretchr/testify/assert"
 )
-
 func TestScaffold(t *testing.T) {
 
 	tempDir, err := ioutil.TempDir(filepath.Join(Gopath, "src"), "test")
