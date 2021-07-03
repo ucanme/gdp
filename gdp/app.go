@@ -18,6 +18,7 @@ var (
 
 
 type GdpApp struct {
+	Name string
 	debug bool
 	Files embed.FS
 	ProjectPath string
@@ -35,7 +36,7 @@ type templateSet struct {
 }
 
 
-func New(debug bool,Files embed.FS) (*GdpApp,error) {
+func New(name string,debug bool,Files embed.FS) (*GdpApp,error) {
 	dir,err := os.Getwd();
 	if err!=nil{
 		return nil,err
@@ -52,22 +53,8 @@ func New(debug bool,Files embed.FS) (*GdpApp,error) {
 		}
 	}
 
-	return &GdpApp{debug: debug,Files: Files,ProjectPath:path.Join(outputPath,ProjectPath)},nil
+	return &GdpApp{Name:name,debug: debug,Files: Files,ProjectPath:path.Join(outputPath,name)},nil
 }
-
-
-
-
-//generate template files
-func StepOne()  {
-
-}
-
-//template replace
-func StepTwo()  {
-
-}
-
 
 func (g *GdpApp) Generate(files embed.FS) error {
 	g.AddTempToSetFromTmpl()
