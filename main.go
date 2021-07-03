@@ -10,7 +10,7 @@ import (
 	"github.com/urfave/cli"
 	_ "embed"
 )
-//go:embed template statics
+//go:embed template
 var Files embed.FS
 
 

@@ -9,7 +9,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"strings"
 )
 
 var (
@@ -71,13 +70,10 @@ func StepTwo()  {
 
 
 func (g *GdpApp) Generate(files embed.FS) error {
-	g.AddTempToSetFromStatics()
 	g.AddTempToSetFromTmpl()
 	g.genFromTemplate()
 	return nil
 }
-
-
 
 
 func (g *GdpApp)AddTempToSetFromTmpl() error {
@@ -95,20 +91,7 @@ func (g *GdpApp)AddTempToSetFromTmpl() error {
 	return nil
 }
 
-func (g *GdpApp)AddTempToSetFromStatics() error {
-	f,err:= fs.Sub(g.Files,"statics")
-	if err!=nil{
-		return errors.New("read template files fail")
-	}
-	fs.WalkDir(f,".", func(path string, d fs.DirEntry, err error) error {
-		if d.IsDir(){
-			return nil
-		}
-		g.visit(d,path)
-		return nil;
-	})
-	return nil
-}
+
 
 
 func (g *GdpApp) genFromTemplate() error {
@@ -136,7 +119,6 @@ func (g *GdpApp) tmplExec(tmplSet templateSet, d map[string]interface{}) error {
 		panic(err)
 	}
 	defer dist.Close()
-
 	//fmt.Printf("Create %s\n", distRelFilePath)
 	return tmpl.Execute(dist, d)
 }
@@ -146,16 +128,10 @@ func (g *GdpApp) visit(d fs.DirEntry,path string) error {
 		templateFilePath: path,
 		templateFileDirEntry: d,
 	}
-	if ext := filepath.Ext(path); ext == ".tmpl" {
-		genFilePath := filepath.Join(g.ProjectPath,strings.TrimSuffix(path, ".tmpl") + ".go")
-		templ.genFilePath = genFilePath
-		templ.EmbedPath = filepath.Join("./template",path)
-	}else {
-		genFilePath := filepath.Join(g.ProjectPath,path)
-		templ.EmbedPath = filepath.Join("./statics",path)
-		templ.genFilePath = genFilePath
-	}
 
+	genFilePath := filepath.Join(g.ProjectPath,path)
+	templ.genFilePath = genFilePath
+	templ.EmbedPath = filepath.Join("./template",path)
 	g.Templates = append(g.Templates, templ)
 	return nil
 }

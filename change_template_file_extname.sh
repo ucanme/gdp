@@ -1,1 +1,1 @@
-find  ./template  -name "*.go" | awk -F "." '{print $2}' | xargs -I {}  mv ./{}.go ./{}.tmpl
+find  ./template  -name "*.tmpl" | awk -F "." '{print $2}' | xargs -I {}  mv ./{}.tmpl ./{}.go
