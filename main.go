@@ -1,40 +1,35 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 
-	"gitee.com/ucanme/scaffold/scaffold"
+	"gitee.com/ucanme/gdp/gdp"
 	"github.com/urfave/cli"
+	_ "embed"
 )
+//go:embed template statics
+var Files embed.FS
+
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "1.0.0-rc"
-	app.Usage = "Generate scaffold project layout for Go."
+	app.Version = "gbp:0.0.1"
+	app.Usage = "Generate default project layout for Go."
 	app.Commands = []cli.Command{
 		{
 			Name:    "init",
 			Aliases: []string{"i"},
-			Usage:   " Generate scaffold project layout",
+			Usage:   " Generate go project default layout",
 			Action: func(c *cli.Context) error {
-				path, err := os.Getwd()
-				if err != nil {
-					panic(err)
-				}
-				currDir, err := filepath.Abs(path)
-				if err != nil {
+				gdpApp,err := gdp.New(false,Files)
+				if err!=nil{
+					fmt.Println(err)
 					return err
 				}
-
-				err = scaffold.New(false).Generate(currDir)
-				//fmt.Printf("error:%+v\n", err)
-				if err == nil {
-					fmt.Println("Success Created. Please excute `make up` to start service.")
-				}
-
+				gdpApp.Generate(Files)
 				return err
 			},
 		},

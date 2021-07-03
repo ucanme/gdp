@@ -1,6 +1,6 @@
-module gitee.com/ucanme/scaffold
+module gitee.com/ucanme/gdp
 
-go 1.14
+go 1.16
 
 require (
 	github.com/pkg/errors v0.9.1
