@@ -1,7 +1,7 @@
 FROM golang:1.13 as builder
 
 WORKDIR /root
-ADD . .
+ADD ../template .
 
 RUN go env -w GOPROXY=https://goproxy.io,direct
 

@@ -20,7 +20,11 @@ func main() {
 			Aliases: []string{"i"},
 			Usage:   " Generate scaffold project layout",
 			Action: func(c *cli.Context) error {
-				currDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+				path, err := os.Getwd()
+				if err != nil {
+					panic(err)
+				}
+				currDir, err := filepath.Abs(path)
 				if err != nil {
 					return err
 				}
