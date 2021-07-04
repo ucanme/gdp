@@ -9,7 +9,7 @@ go run main.go new
 
 follow the prompt then you project will be generated in the directory output.
 
-##how to use
+## how to use
 
 please ensure your golang version is above go1.16+
 ```shell script

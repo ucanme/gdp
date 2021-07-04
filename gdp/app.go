@@ -4,6 +4,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	"github.com/BurntSushi/toml"
 	"html/template"
 	"io/fs"
 	"os"
@@ -58,10 +59,40 @@ func New(name string,debug bool,Files embed.FS) (*GdpApp,error) {
 	}
 
 
-	rePlaceRules := map[string]interface{}{
-		"app_name":name,
+	replaceRules,err := loadRules()
+	if err!=nil{
+		return nil,err
 	}
-	return &GdpApp{Name:name,debug: debug,Files: Files,ProjectPath:path.Join(outputPath,name),ReplaceRules: rePlaceRules},nil
+
+	replaceRules["app_name"] = name
+	return &GdpApp{Name:name,debug: debug,Files: Files,ProjectPath:path.Join(outputPath,name),ReplaceRules: replaceRules},nil
+}
+
+func loadRules() (map[string]interface{},error) {
+	var err error
+	rules := map[string]interface{}{}
+	if ok,_ := PathExists("./replace_rules.toml");ok{
+		_,err = toml.DecodeFile("./replace_rules.toml",&rules)
+		if err!=nil{
+			return rules,errors.New("load replace rules fail"+err.Error())
+		}
+	}
+	return rules,nil
+}
+
+func PathExists(path string) (bool, error) {
+
+	st, err := os.Stat(path)
+	if err == nil && !st.IsDir()  {
+		return true, nil
+	}
+	if err== nil && st.IsDir(){
+		return false,errors.New(path +" is a dir")
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
 }
 
 func (g *GdpApp) Generate(files embed.FS) error {
