@@ -53,7 +53,10 @@ func New(name string,debug bool,Files embed.FS) (*GdpApp,error) {
 		}
 	}
 
-	return &GdpApp{Name:name,debug: debug,Files: Files,ProjectPath:path.Join(outputPath,name)},nil
+	rePlaceRules := map[string]interface{}{
+		"app_name":name,
+	}
+	return &GdpApp{Name:name,debug: debug,Files: Files,ProjectPath:path.Join(outputPath,name),ReplaceRules: rePlaceRules},nil
 }
 
 func (g *GdpApp) Generate(files embed.FS) error {
@@ -107,6 +110,7 @@ func (g *GdpApp) tmplExec(tmplSet templateSet, d map[string]interface{}) error {
 	}
 	defer dist.Close()
 	//fmt.Printf("Create %s\n", distRelFilePath)
+	fmt.Println(dist,d)
 	return tmpl.Execute(dist, d)
 }
 

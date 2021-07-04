@@ -9,7 +9,7 @@ RUN make
 
 FROM golang:1.13
 WORKDIR /root
-COPY --from=builder /root/bin/fastgo /root/fastgo
-RUN ln -s /root/fastgo /bin/fastgo
+COPY --from=builder /root/bin/{{.app_name}} /root/{{.app_name}}
+RUN ln -s /root/{{.app_name}} /bin/{{.app_name}}
 
 CMD ["fastgo", "server"]

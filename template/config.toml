@@ -1,6 +1,6 @@
 [Server]
 Listen = ":19098"
-AppName = "fastgo"
+AppName = "{{.app_name}}"
 Env = "TEST"
 [Auth]
 Enable = false
@@ -14,7 +14,7 @@ e76cb1d7079fdaf49422fe711bfd98c6 = "e10adc3949ba59abbe56e057f20f883e"
 [Database]
 Enable = true
 UserPassword = "root:123456"
-DB = "we"
+DB = "{{.app_name}}"
 [Database.Write]
 HostPort = "tcp(49.233.193.41:33061)"
 [Database.Read]

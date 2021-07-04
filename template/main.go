@@ -20,7 +20,7 @@ func main() {
 
 	buildTime, err := time.Parse("2006-01-02T15:04:05", BuildTime)
 	app := cli.NewApp()
-	app.Name = "demo"
+	app.Name = "{{.app_name}}"
 	app.Version = fmt.Sprintf("%s.%s.%s", BuildGitTag, BuildGitHash, BuildGitCount)
 	app.Usage = "http server"
 	app.Compiled = buildTime
