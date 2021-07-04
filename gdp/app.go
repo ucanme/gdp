@@ -53,6 +53,11 @@ func New(name string,debug bool,Files embed.FS) (*GdpApp,error) {
 		}
 	}
 
+	if st,err := os.Stat(path.Join(outputPath,name));err == nil && st.IsDir(){
+		return nil,errors.New("directory output/"+name+" exist please remove it")
+	}
+
+
 	rePlaceRules := map[string]interface{}{
 		"app_name":name,
 	}
@@ -110,7 +115,6 @@ func (g *GdpApp) tmplExec(tmplSet templateSet, d map[string]interface{}) error {
 	}
 	defer dist.Close()
 	//fmt.Printf("Create %s\n", distRelFilePath)
-	fmt.Println(dist,d)
 	return tmpl.Execute(dist, d)
 }
 

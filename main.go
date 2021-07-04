@@ -26,10 +26,13 @@ func main() {
 			Usage:   " Generate go project default layout",
 			Action: func(c *cli.Context) error {
 				appName := c.String("name")
+
+				if len(os.Args) >2{
+					appName = os.Args[2]
+				}
 				if  appName == ""{
 					appName = confirm("please input your app name:")
 				}
-
 				if appName == ""{
 					return errors.New("the app name input not correct")
 				}
